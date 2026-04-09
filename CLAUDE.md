@@ -86,6 +86,7 @@ ANTHROPIC_API_KEY=<key>     # Claude API key (required for agent)
 - **Linting:** ESLint with typescript-eslint in both packages. Client adds react-hooks + react-refresh.
 - **Prefer pure functions** — avoid classes, use const arrow functions or function declarations
 - **Keep files small** — one concern per file, extract when a file exceeds ~100 lines
+- **Never use `any` or `unknown` as types** — always define proper interfaces/types. Use type assertions (`as X`) only when the concrete type is known.
 - **No default exports** except for React components and Express routers (framework convention)
 - **Naming:** camelCase for variables/functions, PascalCase for types/interfaces, kebab-case for file names
 - **Express patterns:** Controllers are async arrow functions with `(req, res)`. Use try/catch inside.

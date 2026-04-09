@@ -1,8 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 
+interface WeatherToolInput {
+  city: string;
+  units?: 'metric' | 'imperial';
+}
+
 interface ToolCall {
   tool: string;
-  input: Record<string, unknown>;
+  input: WeatherToolInput;
   result: string;
 }
 
@@ -16,7 +21,7 @@ const API_URL = '/api/ask';
 
 function ToolCallBadge({ toolCall }: { toolCall: ToolCall }) {
   const [expanded, setExpanded] = useState(false);
-  const city = (toolCall.input.city as string) || 'unknown';
+  const city = toolCall.input.city || 'unknown';
 
   return (
     <button

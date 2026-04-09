@@ -2,9 +2,20 @@ export interface AskRequest {
   question: string;
 }
 
+export interface WeatherToolInput {
+  city: string;
+  units?: 'metric' | 'imperial';
+}
+
+export interface ToolCallLog {
+  tool: string;
+  input: WeatherToolInput;
+  result: string;
+}
+
 export interface AskResponse {
   answer: string;
-  toolCalls?: { tool: string; input: Record<string, unknown>; result: string }[];
+  toolCalls?: ToolCallLog[];
 }
 
 export interface ErrorResponse {

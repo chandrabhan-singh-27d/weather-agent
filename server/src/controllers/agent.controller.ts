@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
 import Anthropic from '@anthropic-ai/sdk';
-import { AskRequest, AskResponse, ErrorResponse } from '../types/agent.js';
+import {
+  AskRequest,
+  AskResponse,
+  ErrorResponse,
+  WeatherToolInput,
+  ToolCallLog,
+} from '../types/agent.js';
 import { ENV } from '../config/env.js';
 import { weatherTools } from '../tools/definitions.js';
 import { executeTool } from '../tools/handlers.js';
@@ -39,7 +45,7 @@ export const askAgent = async (
   try {
     const anthropic = getClient();
     const messages: Anthropic.MessageParam[] = [{ role: 'user', content: question }];
-    const toolCallLog: AskResponse['toolCalls'] = [];
+    const toolCallLog: ToolCallLog[] = [];
 
     // Agentic loop: keep going until Claude stops calling tools
     for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
@@ -85,7 +91,7 @@ export const askAgent = async (
         let isError = false;
 
         try {
-          result = await executeTool(tool.name, tool.input as Record<string, unknown>);
+          result = await executeTool(tool.name, tool.input as WeatherToolInput);
         } catch (err) {
           result = `Error: ${err instanceof Error ? err.message : String(err)}`;
           isError = true;
@@ -93,7 +99,7 @@ export const askAgent = async (
 
         toolCallLog.push({
           tool: tool.name,
-          input: tool.input as Record<string, unknown>,
+          input: tool.input as WeatherToolInput,
           result,
         });
 

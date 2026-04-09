@@ -1,4 +1,5 @@
 import { ENV } from '../config/env.js';
+import { WeatherToolInput } from '../types/agent.js';
 
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
@@ -29,9 +30,9 @@ async function fetchWeatherAPI<T>(endpoint: string, city: string, units: string)
   return res.json() as Promise<T>;
 }
 
-export async function executeTool(name: string, input: Record<string, unknown>): Promise<string> {
-  const city = input.city as string;
-  const units = (input.units as string) || 'metric';
+export async function executeTool(name: string, input: WeatherToolInput): Promise<string> {
+  const { city } = input;
+  const units = input.units ?? 'metric';
   const unitLabel = units === 'imperial' ? 'F' : 'C';
   const speedLabel = units === 'imperial' ? 'mph' : 'm/s';
 
